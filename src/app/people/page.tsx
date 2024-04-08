@@ -1,4 +1,21 @@
+'use client'
+import {getPeopleInfo} from "@/service/people.service";
+import {useEffect, useState} from "react";
+
 export default function PeoplePage() {
+    const [people, setPeople] = useState({
+        id: '',
+        name: ''
+    })
+    useEffect(() => {
+        const fetchData = async () => {
+            const user = await getPeopleInfo('1');
+            setPeople(user)
+        }
+        fetchData()
+    }, [])
+
+
     return (
 
         <div className="grid grid-cols-3 gap-4">
@@ -19,7 +36,7 @@ export default function PeoplePage() {
                 <div className="flex flex-col items-center pb-10 test-box">
                     <img className="w-24 h-24 mb-3 rounded-full shadow-lg"
                          src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
-                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">Bonnie Green</h5>
+                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{people?.name}</h5>
                     <span className="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
                     <div className="flex mt-4 md:mt-6">
                         <a href="#"
