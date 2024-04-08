@@ -34,3 +34,15 @@
     cursor: pointer;
   }
 }
+.img-wrapper{
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    object-fit: cover;
+  }
+}

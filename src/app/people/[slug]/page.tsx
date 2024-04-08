@@ -48,7 +48,7 @@ export default function Page({params}: { params: { slug: string } }) {
                     />
                 </div>
                 <div>
-                    <div className={file ? 'visible' : 'invisible'}>
+                    <div className={`img-wrapper ${file ? 'visible' : 'invisible'}`}>
                         <Image
                             src={file ? URL.createObjectURL(file) : ''}
                             width={500}
