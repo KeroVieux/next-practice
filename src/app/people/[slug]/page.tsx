@@ -16,13 +16,16 @@ export default function Page({params}: { params: { slug: string } }) {
         const formJson = Object.fromEntries(formData.entries());
         console.log(formJson);
     }
+    const textChanged = (value: string) => {
+        console.log('Text changed', value)
+    }
     return (
         <div>
             <div className="flex">
                 <div>
                     <form method="post" onSubmit={handleSubmit}>
                         <label>
-                            Text input: <input name="myInput" defaultValue="Some initial value"/>
+                            Text input: <input name="myInput" onChange={(e) => {textChanged(e.target.value)}} defaultValue="Some initial value"/>
                         </label>
                         <hr/>
                         <label>
