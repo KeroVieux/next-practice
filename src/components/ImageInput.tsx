@@ -9,7 +9,7 @@ export default function ImageInput({ onFilesChange,}: Props) {
                 Custom Upload
             </label>
             <input
-                id={"file-upload"}
+                id="file-upload"
                 type="file"
                 onChange={(e) => {
                     if (e.target.files) {
