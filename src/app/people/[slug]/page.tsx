@@ -1,9 +1,12 @@
 'use client'
 import ImageInput from '@/components/ImageInput'
 import Image from 'next/image'
-import React from 'react'
+import React, {useRef} from 'react'
+import { toJpeg } from 'html-to-image';
+import nextImg from '@/styles/sdfg3.png'
 
 export default function Page({params}: { params: { slug: string } }) {
+    const ref = useRef<HTMLDivElement>(null)
     const [file, setFile] = React.useState<File | null>(null)
     const [formData, setFormData] = React.useState({})
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,6 +23,16 @@ export default function Page({params}: { params: { slug: string } }) {
     }
     const textChanged = (value: string) => {
         console.log('Text changed', value)
+    }
+    const onButtonClick = async () => {
+        if (!ref.current) {
+            return
+        }
+        const jpg = await toJpeg(ref.current as HTMLElement, { quality: 0.95, })
+        const link = document.createElement('a')
+        link.download = 'my-image-name88.jpeg'
+        link.href = jpg
+        link.click()
     }
     const getImageDimensions = async(file: File | null) => {
         if (!file) {
@@ -42,7 +55,9 @@ export default function Page({params}: { params: { slug: string } }) {
                 <div>
                     <form id="form" method="post" onSubmit={handleSubmit}>
                         <label>
-                            Text input: <input name="name" onChange={(e) => {textChanged(e.target.value)}} defaultValue="Some initial value"/>
+                            Text input: <input name="name" onChange={(e) => {
+                            textChanged(e.target.value)
+                        }} defaultValue="Some initial value"/>
                         </label>
                         <hr/>
                         <label>
@@ -63,22 +78,22 @@ export default function Page({params}: { params: { slug: string } }) {
                     <ImageInput
                         onFilesChange={async (selectedFile) => {
                             setFile(selectedFile)
-                            const {width, height } = await getImageDimensions(selectedFile)
+                            const {width, height} = await getImageDimensions(selectedFile)
                             console.log(`Image dimensions: ${width}x${height}`)
                         }}
                     />
                 </div>
                 <div>
-                    <div className="img-wrapper">
+                    <div className="img-wrapper" ref={ref}>
                         <Image
-                            src="https://flowbite.com/docs/images/logo.svg"
+                            src={nextImg}
                             width={500}
                             height={500}
                             className="code"
                             alt="code"
                         />
                         <Image
-                            src="https://flowbite.com/docs/images/logo.svg"
+                            src={nextImg}
                             width={500}
                             height={500}
                             className="logo"
@@ -89,7 +104,7 @@ export default function Page({params}: { params: { slug: string } }) {
                             <div className="cover-border-content"></div>
                         </div>
                         <Image
-                            src={file ? URL.createObjectURL(file) : 'https://flowbite.com/docs/images/logo.svg'}
+                            src={file ? URL.createObjectURL(file) : nextImg}
                             width={500}
                             height={500}
                             className="bg"
@@ -98,6 +113,7 @@ export default function Page({params}: { params: { slug: string } }) {
                     </div>
                 </div>
             </div>
+            <button onClick={onButtonClick}>Click me</button>
             <div id="result" className={formData.name ? '' : 'hidden'}>
                 {JSON.stringify(formData)}
             </div>
